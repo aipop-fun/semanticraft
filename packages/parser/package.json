@@ -50,16 +50,16 @@
     "mdast-util-from-markdown": "^2.0.1",
     "mdast-util-to-hast": "^1.0.0",
     "unist-util-visit": "^5.0.0",
-    "zod": "^3.23.8",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/markdown-it": "^14.1.2",
-    "@types/node": "^20.14.0",
+    "@types/node": "^20.19.41",
     "@types/uuid": "^9.0.8",
-    "tsup": "^8.1.0",
-    "typescript": "^5.4.5",
-    "vitest": "^1.6.0"
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^1.6.1"
   },
   "engines": {
     "node": ">=18.0.0"

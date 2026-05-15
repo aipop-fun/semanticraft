@@ -1,0 +1,32 @@
+{
+  "name": "@semanticraft/cli",
+  "version": "0.1.0-alpha.1",
+  "description": "CLI for semanticraft parser - Transform Markdown into LLM-optimized structured data",
+  "type": "module",
+  "bin": {
+    "semanticraft": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --clean",
+    "dev": "tsup src/index.ts --format esm --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@semanticraft/parser": "workspace:*",
+    "picocolors": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "tsup": "^8.1.0",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
