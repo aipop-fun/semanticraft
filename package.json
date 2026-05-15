@@ -1,0 +1,34 @@
+{
+  "name": "semanticraft",
+  "version": "1.0.0",
+  "description": "SEO semântico para LLMs - Transforme conteúdo Markdown em dados estruturados que modelos de linguagem entendem, citam e rankeiam.",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace=@semanticraft/parser",
+    "test": "npm run test --workspace=@semanticraft/parser",
+    "lint": "npm run lint --workspace=@semanticraft/parser",
+    "typecheck": "npm run typecheck --workspace=@semanticraft/parser"
+  },
+  "keywords": [
+    "markdown",
+    "llm",
+    "seo",
+    "semantic",
+    "parser",
+    "structured-data",
+    "entity-extraction",
+    "schema"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aipop-fun/semanticraft"
+  },
+  "bugs": {
+    "url": "https://github.com/aipop-fun/semanticraft/issues"
+  },
+  "homepage": "https://github.com/aipop-fun/semanticraft#readme"
+}

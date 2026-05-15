@@ -1,0 +1,27 @@
+# Test
+node_modules/
+dist/
+*.test.ts
+*.spec.ts
+
+# Build
+tsconfig.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local

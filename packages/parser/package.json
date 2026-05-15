@@ -1,0 +1,71 @@
+{
+  "name": "@semanticraft/parser",
+  "version": "0.1.0-alpha.1",
+  "description": "Parser para transformar Markdown em dados estruturados otimizados para LLMs. Extrai entidades semânticas, resolve relationships, classifica intent e calcula confidence scores.",
+  "keywords": [
+    "markdown",
+    "llm",
+    "seo",
+    "semantic",
+    "parser",
+    "structured-data",
+    "entity-extraction",
+    "schema"
+  ],
+  "license": "MIT",
+  "author": "aipop-fun",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aipop-fun/semanticraft",
+    "directory": "packages/parser"
+  },
+  "bugs": {
+    "url": "https://github.com/aipop-fun/semanticraft/issues"
+  },
+  "homepage": "https://github.com/aipop-fun/semanticraft#readme",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --clean",
+    "dev": "tsup src/index.ts --format esm --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "markdown-it": "^14.1.0",
+    "mdast-util-from-markdown": "^2.0.1",
+    "mdast-util-to-hast": "^1.0.0",
+    "unist-util-visit": "^5.0.0",
+    "zod": "^3.23.8",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^20.14.0",
+    "@types/uuid": "^9.0.8",
+    "tsup": "^8.1.0",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
