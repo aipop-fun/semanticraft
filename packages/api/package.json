@@ -1,0 +1,55 @@
+{
+  "name": "@semanticraft/api",
+  "version": "0.1.0-alpha.1",
+  "description": "Fastify API server for Semanticraft parser",
+  "keywords": ["markdown", "llm", "seo", "api", "fastify"],
+  "license": "MIT",
+  "author": "aipop-fun",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aipop-fun/semanticraft",
+    "directory": "packages/api"
+  },
+  "bugs": {
+    "url": "https://github.com/aipop-fun/semanticraft/issues"
+  },
+  "homepage": "https://github.com/aipop-fun/semanticraft#readme",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --clean",
+    "dev": "tsup src/index.ts --format esm --watch",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@fastify/rate-limit": "^9.1.0",
+    "@semanticraft/parser": "^0.1.0-alpha.1",
+    "fastify": "^4.28.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.41",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^1.6.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "@semanticraft/angular",
+  "version": "1.0.0",
+  "description": "Angular integration for Semanticraft semantic parsing and content analysis",
+  "main": "esm2022/semanticraft.module.js",
+  "module": "esm2022/semanticraft.module.js",
+  "typings": "fesm2022/semanticraft.module.d.ts",
+  "exports": {
+    ".": {
+      "default": "./esm2022/semanticraft.module.js"
+    }
+  },
+  "sideEffects": false,
+  "peerDependencies": {
+    "@angular/common": "^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0",
+    "@angular/core": "^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "keywords": [
+    "semanticraft",
+    "angular",
+    "semantic",
+    "parsing",
+    "content-analysis"
+  ],
+  "license": "MIT"
+}

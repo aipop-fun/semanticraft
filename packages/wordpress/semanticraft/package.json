@@ -1,0 +1,20 @@
+{
+  "name": "semanticraft-wordpress",
+  "version": "1.0.0",
+  "description": "AI-powered semantic analysis and structured data injection for WordPress",
+  "main": "semanticraft/semanticraft.php",
+  "scripts": {
+    "build": "echo 'No build step required'",
+    "lint": "php -l semanticraft/*.php includes/*.php"
+  },
+  "keywords": ["wordpress", "plugin", "seo", "structured-data", "json-ld", "markdown"],
+  "author": "SemantiCraft Team",
+  "license": "GPL-2.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/semanticraft/wordpress"
+  },
+  "devDependencies": {
+    "php": "^7.4 || ^8.0"
+  }
+}

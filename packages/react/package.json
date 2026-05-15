@@ -1,0 +1,70 @@
+{
+  "name": "@semanticraft/react",
+  "version": "0.1.0-alpha.1",
+  "description": "React wrapper for semanticraft parser. Provider, hooks, and components for integrating semanticraft into React applications.",
+  "keywords": [
+    "semanticraft",
+    "react",
+    "markdown",
+    "parser",
+    "llm",
+    "seo",
+    "structured-data"
+  ],
+  "license": "MIT",
+  "author": "aipop-fun",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aipop-fun/semanticraft",
+    "directory": "packages/react"
+  },
+  "bugs": {
+    "url": "https://github.com/aipop-fun/semanticraft/issues"
+  },
+  "homepage": "https://github.com/aipop-fun/semanticraft#readme",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --clean",
+    "dev": "tsup src/index.ts --format esm --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "dependencies": {
+    "@semanticraft/parser": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.20",
+    "@types/react-dom": "^18.3.6",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^1.6.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

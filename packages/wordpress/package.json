@@ -1,0 +1,16 @@
+{
+  "name": "semanticraft-wordpress-dev",
+  "version": "1.0.0",
+  "description": "Development environment for SemantiCraft WordPress plugin",
+  "private": true,
+  "workspaces": [
+    "semanticraft"
+  ],
+  "scripts": {
+    "lint": "npm run lint --workspace=semanticraft",
+    "build": "npm run build --workspace=semanticraft"
+  },
+  "devDependencies": {
+    "php": "^7.4 || ^8.0"
+  }
+}

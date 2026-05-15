@@ -1,0 +1,60 @@
+{
+  "name": "@semanticraft/embed",
+  "version": "0.1.0-alpha.1",
+  "description": "Embeddable script for auto-detecting markdown content and injecting JSON-LD structured data",
+  "keywords": [
+    "semanticraft",
+    "json-ld",
+    "structured-data",
+    "seo",
+    "markdown",
+    "embed",
+    "schema.org"
+  ],
+  "license": "MIT",
+  "author": "aipop-fun",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aipop-fun/semanticraft",
+    "directory": "packages/embed"
+  },
+  "bugs": {
+    "url": "https://github.com/aipop-fun/semanticraft/issues"
+  },
+  "homepage": "https://github.com/aipop-fun/semanticraft#readme",
+  "type": "module",
+  "main": "./dist/semanticraft.global.js",
+  "module": "./dist/semanticraft.global.js",
+  "types": "./dist/semanticraft.global.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/semanticraft.global.js",
+      "types": "./dist/semanticraft.global.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/semanticraft.ts --format iife --global-name semanticraft --clean",
+    "dev": "tsup src/semanticraft.ts --format iife --global-name semanticraft --watch",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "markdown-it": "^14.1.0"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^20.19.41",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
