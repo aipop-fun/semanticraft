@@ -1,19 +1,27 @@
 {
   "name": "@semanticraft/angular",
-  "version": "1.0.0",
+  "version": "0.1.0-alpha.1",
   "description": "Angular integration for Semanticraft semantic parsing and content analysis",
-  "main": "esm2022/semanticraft.module.js",
-  "module": "esm2022/semanticraft.module.js",
-  "typings": "fesm2022/semanticraft.module.d.ts",
+  "type": "module",
+  "main": "./dist/semanticraft.module.js",
+  "module": "./dist/semanticraft.module.js",
+  "typings": "./dist/semanticraft.module.d.ts",
   "exports": {
     ".": {
-      "default": "./esm2022/semanticraft.module.js"
+      "import": "./dist/semanticraft.module.js",
+      "types": "./dist/semanticraft.module.d.ts"
     }
   },
   "sideEffects": false,
+  "files": [
+    "dist"
+  ],
   "peerDependencies": {
     "@angular/common": "^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0",
     "@angular/core": "^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0"
+  },
+  "dependencies": {
+    "@semanticraft/parser": "workspace:*"
   },
   "engines": {
     "node": ">=14.0.0"
@@ -25,5 +33,18 @@
     "parsing",
     "content-analysis"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aipop-fun/semanticraft",
+    "directory": "packages/angular"
+  },
+  "bugs": {
+    "url": "https://github.com/aipop-fun/semanticraft/issues"
+  },
+  "homepage": "https://github.com/aipop-fun/semanticraft#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }

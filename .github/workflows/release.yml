@@ -3,6 +3,13 @@ name: Release
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run mode (no actual publish)"
+        required: false
+        type: boolean
+        default: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -19,9 +26,9 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+          cache: "npm"
 
       - run: npm ci
 
@@ -30,10 +37,20 @@ jobs:
 
       - name: Publish to NPM
         run: |
+          DRY_RUN=${{ inputs.dry_run || github.event.inputs.dry_run == 'true' }}
+          OTP=${{ vars.NPM_OTP_SECRET }}
+
           for pkg in packages/*/; do
             pkg_name=$(node -p "require('./' + '$pkg'.replace(/\/$/, '') + '/package.json').name")
             if [[ "$pkg_name" == @semanticraft/* ]]; then
-              npm publish --access public --tolerate-republish
+              publish_cmd="npm publish --access public --tolerate-republish"
+              if [[ -n "$OTP" ]]; then
+                publish_cmd="$publish_cmd --otp=$OTP"
+              fi
+              if [[ "$DRY_RUN" == "true" ]]; then
+                publish_cmd="$publish_cmd --dry-run"
+              fi
+              (cd "$pkg" && eval "$publish_cmd")
             fi
           done
         env:

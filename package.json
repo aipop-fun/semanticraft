@@ -1,6 +1,6 @@
 {
   "name": "semanticraft",
-  "version": "1.0.0",
+  "version": "0.1.0-alpha.1",
   "description": "SEO semântico para LLMs - Transforme conteúdo Markdown em dados estruturados que modelos de linguagem entendem, citam e rankeiam.",
   "private": true,
   "workspaces": [

@@ -37,7 +37,8 @@
   "dependencies": {
     "@fastify/rate-limit": "^9.1.0",
     "@semanticraft/parser": "^0.1.0-alpha.1",
-    "fastify": "^4.28.1"
+    "fastify": "^4.28.1",
+    "ioredis": "^5.4.1"
   },
   "devDependencies": {
     "@types/node": "^20.19.41",
