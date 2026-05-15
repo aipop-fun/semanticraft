@@ -118,19 +118,35 @@ const QuestionEntitySchema = z.object({
   }),
 });
 
-const NavigationEntitySchema = z.object({
-  id: z.string(),
-  type: z.literal('Navigation'),
-  content: z.string(),
-  normalizedContent: z.string(),
-  confidence: z.number().min(0).max(1),
-  boundingContext: z.string(),
-  metadata: EntityMetadataSchema,
-  name: z.string(),
-  url: z.string(),
-  position: z.number(),
-  children: z.array(z.lazy(() => NavigationEntitySchema)).optional(),
-});
+export type NavigationEntity = {
+  id: string;
+  type: 'Navigation';
+  content: string;
+  normalizedContent: string;
+  confidence: number;
+  boundingContext: string;
+  metadata: Record<string, unknown>;
+  name: string;
+  url: string;
+  position: number;
+  children?: NavigationEntity[];
+};
+
+export const NavigationEntitySchema: z.ZodType<NavigationEntity> = z.lazy(() =>
+  z.object({
+    id: z.string(),
+    type: z.literal('Navigation'),
+    content: z.string(),
+    normalizedContent: z.string(),
+    confidence: z.number().min(0).max(1),
+    boundingContext: z.string(),
+    metadata: EntityMetadataSchema,
+    name: z.string(),
+    url: z.string(),
+    position: z.number(),
+    children: z.array(NavigationEntitySchema).optional(),
+  }),
+);
 
 const CallToActionEntitySchema = z.object({
   id: z.string(),

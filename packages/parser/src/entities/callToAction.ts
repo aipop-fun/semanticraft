@@ -2,9 +2,6 @@ import { v4 as uuidv4 } from 'uuid';
 import type { Entity, CallToActionEntity } from '../types/entities';
 
 const CTA_INTENTS = ['buy', 'subscribe', 'contact', 'download', 'signup'];
-const CTA_PATTERNS = [
-  /\[([^\]]+)\]\(([^)]+)\)/g,
-];
 
 function detectIntent(text: string): CallToActionEntity['intent'] {
   const lower = text.toLowerCase();

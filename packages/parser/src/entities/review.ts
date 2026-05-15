@@ -5,14 +5,13 @@ export function extractReviews(markdown: string): Entity[] {
   const entities: Entity[] = [];
   const starPattern = /(⭐|⭐️|★|☆|[*]|[0-9]+(?:\.[0-9]+)?(?:\s*\/\s*5))\s*([0-9]+(?:\.[0-9]+)?(?:\s*\/\s*5))?(?:\s*[-–—]\s*)?"([^"]+)"/g;
 
-  let match;
+  let match: RegExpExecArray | null;
   while ((match = starPattern.exec(markdown)) !== null) {
     const starsFull = (match[1].match(/⭐|⭐️|★/g) || []).length;
     const ratingStr = match[2] || match[1].replace(/[^0-9.]/g, '');
     const rating = parseFloat(ratingStr) || starsFull;
     const reviewText = match[3];
 
-    const beforeMatch = markdown.slice(Math.max(0, match.index - 100), match.index);
     const afterMatch = markdown.slice(match.index + match[0].length, match.index + match[0].length + 100);
     const authorMatch = afterMatch.match(/[-–—]\s*([A-Z][a-zA-Z\s]+?)(?:\s*\d|$)/);
 
@@ -36,7 +35,8 @@ export function extractReviews(markdown: string): Entity[] {
   const numericPattern = /([0-9]+(?:\.[0-9]+)?)\s*(?:out of)?\s*5\s*(?:stars?)?[^"]*"([^"]+)"/gi;
   while ((match = numericPattern.exec(markdown)) !== null) {
     const rating = parseFloat(match[1]);
-    if (rating <= 5 && !entities.some(e => e.boundingContext.includes(match[0]))) {
+    const matchStr = match[0];
+    if (rating <= 5 && !entities.some(e => e.boundingContext.includes(matchStr))) {
       const reviewText = match[2];
       const reviewEntity: ReviewEntity = {
         id: uuidv4(),

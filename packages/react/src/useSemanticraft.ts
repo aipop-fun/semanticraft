@@ -3,7 +3,7 @@ import { useSemanticraftContext } from './SemanticraftProvider';
 import type { UseSemanticraftReturn } from './types';
 
 export function useSemanticraft(): UseSemanticraftReturn {
-  const { config, parse, parsedContent, isLoading, error } = useSemanticraftContext();
+  const { parse, parsedContent, isLoading, error } = useSemanticraftContext();
 
   const result = useMemo<UseSemanticraftReturn>(
     () => ({

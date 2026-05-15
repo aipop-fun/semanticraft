@@ -1,10 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import MarkdownIt from 'markdown-it';
-import type { Entity, EntityType, BaseEntity } from './types/entities';
-import type { Relationship, RelationshipType } from './types/relationships';
-import type { IntentClassification } from './types/intent';
 import type { DocumentMetadata } from './types/metadata';
-import type { LLMContent, ParseOptions, ValidationResult } from './types/index';
+import type { LLMContent, ParseOptions, ValidationResult, Entity, Relationship, IntentClassification, IntentType, ConfidenceScore, ProductEntity } from './types/index';
 import {
   extractSpecifications,
   extractReviews,
@@ -14,16 +11,6 @@ import {
   extractNavigation,
   extractQuotes,
 } from './entities';
-
-interface AstNode {
-  type: string;
-  content: string;
-  map?: [number, number];
-  tag?: string;
-  info?: string;
-  children?: AstNode[];
-  attrs?: Record<string, string>;
-}
 
 const PRICE_PATTERNS = [
   /R\$\s*(\d+(?:[.,]\d{2})?)/i,
@@ -113,14 +100,14 @@ function extractFromAst(markdown: string): {
         headings.push({
           level,
           text: nextToken.content,
-          map: token.map,
+          map: token.map ?? undefined,
         });
         i++;
       }
     } else if (token.type === 'paragraph_open') {
       flushParagraph();
       flushList();
-      lastParagraphMap = token.map;
+      lastParagraphMap = token.map ?? undefined;
     } else if (token.type === 'inline') {
       const text = token.content;
       if (lastParagraphText) {
@@ -129,7 +116,7 @@ function extractFromAst(markdown: string): {
         lastParagraphText = text;
       }
       if (!lastParagraphMap && token.map) {
-        lastParagraphMap = token.map;
+lastParagraphMap = token.map ?? undefined;
       }
     } else if (token.type === 'paragraph_close') {
       flushParagraph();
@@ -142,10 +129,11 @@ function extractFromAst(markdown: string): {
     } else if (token.type === 'list_item_open') {
       const nextInline = tokens[i + 1];
       if (nextInline && nextInline.type === 'inline') {
+        const ordered = tokens[i - 1] && tokens[i - 1].type === 'ordered_list_open';
         currentListItems.push({
           text: nextInline.content,
-          map: token.map,
-          ordered: token.type === 'ordered_list_open',
+          map: token.map ?? undefined,
+          ordered,
         });
       }
     } else if (token.type === 'bullet_list_close' || token.type === 'ordered_list_close') {
@@ -156,7 +144,7 @@ function extractFromAst(markdown: string): {
       codeBlocks.push({
         language: token.info || '',
         code: token.content,
-        map: token.map,
+        map: token.map ?? undefined,
       });
     } else if (token.type === 'code_block') {
       flushParagraph();
@@ -164,7 +152,7 @@ function extractFromAst(markdown: string): {
       codeBlocks.push({
         language: token.info || '',
         code: token.content,
-        map: token.map,
+        map: token.map ?? undefined,
       });
     }
   }
@@ -191,13 +179,14 @@ function extractAllEntities(markdown: string): Entity[] {
   const { headings, lists, faqs, paragraphs } = extractFromAst(markdown);
 
   if (headings.length > 0 && headings[0].level === 1) {
-    const productEntity: Entity = {
+    const productEntity: ProductEntity = {
       id: uuidv4(),
       type: 'Product',
       content: headings[0].text,
       normalizedContent: normalizeText(headings[0].text),
+      normalizedName: normalizeText(headings[0].text),
       confidence: 0.95,
-      boundingContext: getSourceSlice(markdown, headings[0].map) || markdown.slice(0, 200),
+      boundingContext: getSourceSlice(markdown, headings[0].map) ?? markdown.slice(0, 200),
       metadata: {
         extractedFrom: 'heading',
         headingLevel: 1,
@@ -286,74 +275,6 @@ function extractAllEntities(markdown: string): Entity[] {
   return entities;
 }
 
-function generateUsageHints(relationships: Relationship[]): UsageHint[] {
-  const hints: UsageHint[] = [];
-
-  const hintMap: Record<RelationshipType, { hint: string; queryTypes: ('transactional' | 'informational' | 'comparative')[] }> = {
-    hierarchical: {
-      hint: 'Use when user wants to understand product categories or navigate product structure',
-      queryTypes: ['informational'],
-    },
-    comparative: {
-      hint: 'Use when user compares products or asks about differences between options',
-      queryTypes: ['comparative', 'informational'],
-    },
-    temporal: {
-      hint: 'Use when user asks about product history, availability timeline, or scheduling',
-      queryTypes: ['informational'],
-    },
-    specification: {
-      hint: 'Use when user asks about technical details, features, or product capabilities',
-      queryTypes: ['informational'],
-    },
-    pricing: {
-      hint: 'Use when user asks about price, cost, value, or purchasing options',
-      queryTypes: ['transactional', 'informational'],
-    },
-    review_of: {
-      hint: 'Use when user wants reviews, ratings, opinions, or user experiences',
-      queryTypes: ['informational', 'comparative'],
-    },
-    faq_about: {
-      hint: 'Use when user has common questions about product usage or specifications',
-      queryTypes: ['informational'],
-    },
-    media_of: {
-      hint: 'Use when user wants to see product images, videos, or visual demonstrations',
-      queryTypes: ['informational'],
-    },
-    navigation_to: {
-      hint: 'Use when user wants to navigate to related pages or additional resources',
-      queryTypes: ['transactional', 'informational'],
-    },
-    call_to: {
-      hint: 'Use when user intends to purchase, sign up, or take action on the product',
-      queryTypes: ['transactional'],
-    },
-    related: {
-      hint: 'Use for general related content that does not fit specific relationship types',
-      queryTypes: ['informational'],
-    },
-    same_as: {
-      hint: 'Use when user refers to the same product by different names',
-      queryTypes: ['informational', 'transactional'],
-    },
-  };
-
-  for (const rel of relationships) {
-    const hintTemplate = hintMap[rel.type];
-    if (hintTemplate) {
-      hints.push({
-        relationship: rel.id,
-        hint: hintTemplate.hint,
-        queryTypes: hintTemplate.queryTypes,
-      });
-    }
-  }
-
-  return hints;
-}
-
 function resolveEntityRelationships(entities: Entity[], markdown: string = ''): Relationship[] {
   const relationships: Relationship[] = [];
   const normalizedMarkdown = markdown.toLowerCase();
@@ -413,7 +334,7 @@ function resolveEntityRelationships(entities: Entity[], markdown: string = ''): 
         confidence: 0.92,
         bidirectional: false,
         metadata: {
-          extractionMethod: 'structural',
+          extractionMethod: 'explicit',
           boundingContext: 'specs section near product',
         },
       });
@@ -518,7 +439,7 @@ function resolveEntityRelationships(entities: Entity[], markdown: string = ''): 
         confidence: 0.85,
         bidirectional: false,
         metadata: {
-          extractionMethod: 'structural',
+          extractionMethod: 'explicit',
           boundingContext: 'sequential navigation links',
         },
       });
@@ -592,7 +513,7 @@ function calcConfidence(entities: Entity[], relationships: Relationship[]): {
     warnings.push('No price found - may impact LLM transaction understanding');
   }
 
-  const relationshipsWithProducts = relationships.filter(r =>
+  const relationshipsWithProducts = relationships.filter(() =>
     entities.some(e => e.type === 'Product')
   );
   if (relationshipsWithProducts.length === 0) {
@@ -622,7 +543,7 @@ export function createParser() {
         resolveRelationships = true,
         calculateConfidence = true,
         includeIntent = true,
-        maxNestingDepth = 4,
+        maxNestingDepth: _maxNestingDepth = 4,
         sourceUrl,
       } = options;
 
@@ -638,9 +559,10 @@ export function createParser() {
         ? (() => {
           const hasPrice = entities.some(e => e.type === 'Offer');
           const hasProduct = entities.some(e => e.type === 'Product');
+          const secondaryArr: IntentType[] = ['informational'];
           return {
             primary: (hasPrice && hasProduct ? 'transactional' : 'informational') as IntentClassification['primary'],
-            secondary: ['informational'] as IntentClassification['secondary'],
+            secondary: secondaryArr,
             confidence: 0.85,
             signals: {
               hasPrice,
@@ -653,7 +575,7 @@ export function createParser() {
             pageType: (hasProduct ? 'product' : 'blog') as IntentClassification['pageType'],
           };
         })()
-        : { primary: 'informational' as const, secondary: ['informational'] as const, confidence: 0.5, signals: { hasPrice: false, hasBuyIntent: false, isComparison: false, isHowTo: false, isTroubleshooting: false, isProductPage: false }, pageType: 'blog' as const };
+        : { primary: 'informational' as const, secondary: ['informational'] as IntentType[], confidence: 0.5, signals: { hasPrice: false, hasBuyIntent: false, isComparison: false, isHowTo: false, isTroubleshooting: false, isProductPage: false }, pageType: 'blog' as const };
 
       const doCalculateConfidence = calculateConfidence && extractEntities;
       const confidence = doCalculateConfidence
@@ -674,7 +596,6 @@ export function createParser() {
         metadata,
         entities,
         relationships,
-        usageHints: doResolveRelationships ? generateUsageHints(relationships) : [],
         intent,
         confidence: {
           ...confidence,
@@ -743,4 +664,4 @@ export function createParser() {
   };
 }
 
-export type { LLMContent, ParseOptions, ValidationResult };
+export type { LLMContent, ParseOptions, ValidationResult, Entity, Relationship, IntentClassification, ConfidenceScore, IntentType, ProductEntity };

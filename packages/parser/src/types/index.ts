@@ -7,6 +7,11 @@ import type { Entity } from './entities';
 import type { Relationship } from './relationships';
 import type { IntentClassification, ConfidenceScore } from './intent';
 
+export type { Entity, ProductEntity } from './entities';
+export type { Relationship } from './relationships';
+export type { IntentClassification, ConfidenceScore } from './intent';
+export type { IntentType } from './intent';
+
 export interface LLMContent {
   llmseo_version: '1.0';
   metadata: DocumentMetadata;

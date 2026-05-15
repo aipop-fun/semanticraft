@@ -31,7 +31,7 @@ export function extractQuotes(markdown: string): Entity[] {
   return entities;
 }
 
-function createQuoteEntity(text: string, fullMarkdown: string): QuoteEntity | null {
+function createQuoteEntity(text: string, _fullMarkdown: string): QuoteEntity | null {
   if (!text.trim()) return null;
 
   const dashMatch = text.match(/[-–—]\s*([A-Z][a-zA-Z\s]+?)(?:\s*$)/);

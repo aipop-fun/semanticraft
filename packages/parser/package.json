@@ -37,7 +37,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm --clean",
+    "build": "tsup src/index.ts --format esm --clean --dts",
     "dev": "tsup src/index.ts --format esm --watch",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -48,7 +48,7 @@
   "dependencies": {
     "markdown-it": "^14.1.0",
     "mdast-util-from-markdown": "^2.0.1",
-    "mdast-util-to-hast": "^1.0.0",
+    "mdast-util-to-hast": "^13.0.0",
     "unist-util-visit": "^5.0.0",
     "uuid": "^9.0.1",
     "zod": "^3.23.8"

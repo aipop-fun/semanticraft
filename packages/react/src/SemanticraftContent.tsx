@@ -5,7 +5,6 @@ import type { SemanticraftContentProps } from './types';
 export function SemanticraftContent({
   children,
   selector,
-  parseOptions,
   renderLoading,
   renderError,
   fallback,

@@ -1,16 +1,53 @@
 {
-  "name": "semanticraft-wordpress-dev",
-  "version": "1.0.0",
-  "description": "Development environment for SemantiCraft WordPress plugin",
-  "private": true,
-  "workspaces": [
-    "semanticraft"
+  "name": "@semanticraft/wordpress",
+  "version": "0.1.0-alpha.1",
+  "description": "WordPress plugin for Semanticraft semantic parsing and JSON-LD injection",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
   ],
   "scripts": {
-    "lint": "npm run lint --workspace=semanticraft",
-    "build": "npm run build --workspace=semanticraft"
+    "build": "tsup src/index.ts --format esm --clean",
+    "dev": "tsup src/index.ts --format esm --watch",
+    "typecheck": "tsc --noEmit"
   },
-  "devDependencies": {
-    "php": "^7.4 || ^8.0"
+  "peerDependencies": {
+    "@semanticraft/embed": "workspace:*"
+  },
+  "dependencies": {
+    "@semanticraft/embed": "workspace:*"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "semanticraft",
+    "wordpress",
+    "seo",
+    "json-ld",
+    "structured-data"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aipop-fun/semanticraft",
+    "directory": "packages/wordpress"
+  },
+  "bugs": {
+    "url": "https://github.com/aipop-fun/semanticraft/issues"
+  },
+  "homepage": "https://github.com/aipop-fun/semanticraft#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
