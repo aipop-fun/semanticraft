@@ -2,6 +2,11 @@
 
 Angular integration for Semanticraft semantic parsing and content analysis.
 
+## Requirements
+
+- Angular 19.2.16+ or Angular 20+ (required for security patches)
+- Node.js 14+
+
 ## Installation
 
 ```bash
